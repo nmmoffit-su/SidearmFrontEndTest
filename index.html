@@ -1,0 +1,150 @@
+<html>
+
+<head>
+    <title>Nick Moffitt</title>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <link href="https://fonts.google.com/specimen/Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+
+</style>
+</head>
+
+<body>
+    <nav>
+        <div class="desktop-nav">
+            <ul class="row navigation-list" data-bind="foreach: tabs">
+                <li class="nav-item">
+                    <a class="navigation-link" data-bind="text: $data.title" href="#"></a>
+                </li>
+            </ul>
+            <div class="dropdown-content">
+                <ul class="dropdown-list" data-bind="foreach: dropdownContent">
+                    <div class="dropdown-section">
+                        <li class="sub-title" data-bind="text: $data.subtitle"></li>
+                        <!-- ko if: subtitle === "Men's Sports" -->
+                        <div data-bind="foreach: mensport">
+                            <div class="sub-navigation-link">
+                                <a data-bind="text: $data.sport" href="#"></a>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: subtitle === "Women's Sports" -->
+                        <div data-bind="foreach: womsport">
+                            <div class="sub-navigation-link">
+                                <a data-bind="text: $data.sport" href="#"></a>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="mobile-nav">
+            <div class="mobile-bar">
+                <a href="javascript:void(0);" class="icon" onclick="toggleNavIcon()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div class="mobile-container">
+            <div class="mobile-dropdown">
+                <div id="nav-links">
+                    <ul class="row navigation-list" data-bind="foreach: tabs">
+                        <div class="sidebar-item">
+                            <li class="nav-item">
+                                <a class="navigation-link" data-bind="text: $data.title" href="#"></a>
+                            </li>
+                            <div class="dropdown-content">
+                                <ul class="dropdown-list" data-bind="foreach: dropdownContent">
+                                    <div class="dropdown-section">
+                                        <li class="sub-title" data-bind="text: $data.subtitle"></li>
+                                        <!-- ko if: subtitle === "Men's Sports" -->
+                                        <div data-bind="foreach: mensport">
+                                            <div class="sub-navigation-link">
+                                                <a data-bind="text: $data.sport" href="#"></a>
+                                            </div>
+                                        </div>
+                                        <!-- /ko -->
+                                        <!-- ko if: subtitle === "Women's Sports" -->
+                                        <div data-bind="foreach: womsport">
+                                            <div class="sub-navigation-link">
+                                                <a data-bind="text: $data.sport" href="#"></a>
+                                            </div>
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        ko.applyBindings(navViewModel());
+        function toggleNavIcon() {
+            var navIcon = document.getElementById("#nav-links");
+            if (navIcon.style.display === "block") {
+                navIcon.style.display = "none";
+            } else {
+                navIcon.style.display = "block";
+            }
+        }
+
+        $('.navigation-list .nav-item:first-of-type')
+            .on('mouseover', function (event) {
+                $('.desktop-nav .dropdown-content').show();
+            })
+            .on('mouseout', function (event) {
+                $('.desktop-nav .dropdown-content').hide();
+            });
+
+
+        $('.desktop-nav .dropdown-content')
+            .on('mouseover', function (event) {
+                $('.desktop-nav .dropdown-content').show();
+                $('.nav-item:first-of-type').css("background-color", "gold");
+                $('.nav-item:first-of-type a').css("color", "rgb(46, 117, 56)");
+            })
+            .on('mouseout', function (event) {
+                $('.desktop-nav .dropdown-content').hide();
+                $('.nav-item:first-of-type').css("background-color", "");
+                $('.nav-item:first-of-type a').css("color", "");
+            });
+
+        $('.icon').click(function () {
+            $("i", this).toggleClass("fa-bars fa-times");
+            if ($('.mobile-dropdown #nav-links').is(':visible')) {
+                $(".mobile-dropdown #nav-links").slideUp(400);
+            }
+            else {
+                $(".mobile-dropdown #nav-links").slideDown(400);
+            }
+        });
+
+        $('.navigation-list .sidebar-item:first-of-type a')
+            .on('click', function (event) {
+                if ($('.mobile-dropdown .sidebar-item:first-of-type .dropdown-content').is(':visible')) {
+                    $('.mobile-dropdown .sidebar-item:first-of-type .dropdown-content').slideUp(400);
+                }
+                else {
+                    $('.mobile-dropdown .sidebar-item:first-of-type .dropdown-content').slideDown(400);
+                }
+
+            });
+
+        $(".navigation-list .sidebar-item:first-of-type a").click(function () {
+            $(".sidebar-item:first-of-type .navigation-link").toggleClass("down");
+        })
+    </script>
+</body>
+
+</html>
